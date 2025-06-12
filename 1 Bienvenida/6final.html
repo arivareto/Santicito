@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>See you soon...</title>
+  <link rel="icon" type="image/png" href="6icon.png" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at center, #1c1c1c 0%, #000 100%);
+      color: white;
+      font-family: 'Courier New', monospace;
+      overflow-x: hidden;
+      height: 100vh;
+    }
+
+    .center {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      z-index: 10;
+    }
+
+    h1 {
+      font-size: 2em;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .firework-gif {
+      position: absolute;
+      width: 150px;
+      z-index: 1;
+      animation: fadeIn 2s ease;
+      pointer-events: none;
+    }
+
+    #fireworks-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .envelope {
+      width: 400px;
+      margin: 2em auto;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .envelope:hover {
+      transform: scale(1.1);
+    }
+
+    .final-message {
+      margin-top: 2em;
+      font-size: 1em;
+      max-width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 4s ease forwards;
+      animation-delay: 2s;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      width: 40px;
+      animation: floatBalloon 10s linear infinite;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    @keyframes floatBalloon {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-110vh) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    .hover-hint {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    #secret-balloon {
+      filter: brightness(0.4);
+      transition: filter 0.4s ease, transform 0.4s ease;
+      z-index: 100;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    #secret-balloon.highlight {
+      filter: brightness(1.5) drop-shadow(0 0 10px white);
+      transform: scale(1.3);
+    }
+
+    /* MODAL DE CARTA */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      position: relative;
+      margin: 5% auto;
+      padding: 0;
+      width: 90%;
+      max-width: 700px;
+      animation: zoom 0.5s ease;
+    }
+
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .close {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      color: white;
+      background: crimson;
+      border-radius: 50%;
+      font-size: 24px;
+      font-weight: bold;
+      padding: 4px 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px black;
+    }
+
+    @keyframes zoom {
+      from {transform: scale(0.7);}
+      to {transform: scale(1);}
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+  </style>
+</head>
+<body>
+  <audio id="rubSound" src="6rub.mp3" preload="auto"></audio>
+
+  <div id="fireworks-container"></div>
+
+  <div class="center">
+    <h1>¡Felicidades! Has abierto el último pliegue… ¿o no?</h1>
+    <img src="envelope.gif" alt="Sobre con animación, haz clic para abrir la carta" class="envelope" onclick="openModal()" />
+      <div class="final-message">
+  Gracias por seguir cada túnel, cada hilo invisible accedido a través de nuestro tiempo compartido.<br />
+  Espero que mi cariño te siga acompañando ahora, y por muchísimo tiempo más...<br /><br />
+
+  Todo cambia, dicen. Que lo único estático son los recuerdos.<br />
+  Pero no, incluso la estática también se genera al frotar globos que crean electricidad...<br /><br />
+
+  Guarda esta página siempre que quieras encontrarme.<br />
+  Carga el vínculo, carga el aire.<br />
+  Ilumina lo que parece el final.<br />
+ 
+      <span class="hover-hint" id="rubTrigger">(Frota aquí para generar estática)</span><br /><br />
+      <em>Hasta pronto, Santicito bonito.</em>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div id="letterModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img src="6carta.jpg" alt="Carta final">
+    </div>
+  </div>
+
+  <script>
+    // Modal
+    function openModal() {
+      document.getElementById("letterModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("letterModal").style.display = "none";
+    }
+
+    // Fuegos artificiales
+    function launchFirework() {
+      const fw = document.createElement('img');
+      fw.src = 'fireworks.gif';
+      fw.className = 'firework-gif';
+      fw.style.top = Math.random() * window.innerHeight * 0.5 + 'px';
+      fw.style.left = Math.random() * window.innerWidth * 0.9 + 'px';
+      document.getElementById('fireworks-container').appendChild(fw);
+      setTimeout(() => fw.remove(), 4000);
+    }
+
+    for (let i = 0; i < 5; i++) {
+      setTimeout(launchFirework, i * 800);
+    }
+    setInterval(launchFirework, 6000);
+
+    // Globos flotantes
+    function createBalloon() {
+      const balloon = document.createElement('img');
+      const imgs = ['balloon.png', 'balloonorange.png'];
+      balloon.src = imgs[Math.floor(Math.random() * imgs.length)];
+      balloon.className = 'balloon';
+      balloon.style.left = Math.random() * window.innerWidth + 'px';
+      balloon.style.animationDuration = (6 + Math.random() * 6) + 's';
+      document.body.appendChild(balloon);
+      setTimeout(() => document.body.removeChild(balloon), 12000);
+    }
+
+    for (let i = 0; i < 6; i++) {
+      setTimeout(() => createBalloon(), i * 1000);
+    }
+    setInterval(createBalloon, 6000);
+
+    // Globo secreto
+    const secretBalloon = document.createElement('img');
+    secretBalloon.src = 'balloon.png';
+    secretBalloon.className = 'balloon';
+    secretBalloon.id = 'secret-balloon';
+    secretBalloon.title = "🎈¿Más?";
+    secretBalloon.style.left = '65%';
+    secretBalloon.style.animationDuration = '13s';
+    secretBalloon.onclick = () => window.location.href = '7bonus.html';
+    document.body.appendChild(secretBalloon);
+
+    // Hover que lo resalta
+    const hint = document.querySelector('.hover-hint');
+    hint.addEventListener('mouseenter', () => {
+      secretBalloon.classList.add('highlight');
+    });
+    hint.addEventListener('mouseleave', () => {
+      secretBalloon.classList.remove('highlight');
+    });
+  </script>
+
+<script>
+  const rubTrigger = document.getElementById('rubTrigger');
+  const rubSound = document.getElementById('rubSound');
+
+  rubTrigger.addEventListener('mouseenter', () => {
+    rubSound.currentTime = 0;
+    rubSound.play();
+  });
+</script>
+
+</body>
+</html>

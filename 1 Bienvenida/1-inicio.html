@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="icon" type="image/png" href="droid.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recorrido</title>
+  <style>
+    body {
+      margin: 2px;
+      padding: 40px 40px 50px 80px;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #ffffff;
+      color: #000000;
+      display: flow-root;
+      height: 100vh;
+      overflow: hidden;
+      transition: opacity 1.5s ease;
+      animation: fadeInBody 2s ease-in;
+    }
+
+    @keyframes fadeInBody {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body.fade-out {
+      opacity: 0;
+    }
+
+    .intro-bar {
+      height: 4px;
+      width: 100%;
+      background: linear-gradient(90deg, #000, #ccc, #000);
+      background-size: 200% 100%;
+      animation: scanLine 4s linear infinite;
+    }
+
+    @keyframes scanLine {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+      height: calc(100% - 4px); /* resta la intro-bar */
+    }
+
+    .text-section {
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+      width: 50%;
+      padding: 45px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeIn 2s ease-in-out;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* sutil */
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .text-section p {
+      font-size: 16px;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .password-input {
+      margin-top: 20px;
+    }
+
+    .password-input input {
+      font-size: 16px;
+      font-style: italic;
+      color: #999;
+      padding: 8px;
+      width: 60%;
+      border: 1px solid #ffffff;
+      border-radius: 3px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .password-input input:focus {
+      outline: none;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+      border-color: #aaa;
+    }
+
+    .error-message {
+      color: rgb(199, 81, 81);
+      margin-top: 10px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .image-section {
+      width: 25%;
+      background: url('inicio.jpg') no-repeat center center;
+      background-size: contain;
+      background-color: #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="intro-bar"></div>
+
+  <div class="container">
+    <div class="text-section">
+      <p>Bienvenido, internauta, a un lugar que trasciende el tiempo y el espacio.<br>
+      Un lugar que solo algo verdaderamente afín a su propósito podía gestar: el amor.</p>
+
+      <p>Aquello que encuentra formas para fugarse de las brechas físicas que nos separan,<br>
+      el pegamento que mantiene nuestros universos en añoranza.</p>
+      
+      <p>Hoy, el día en que celebro tu llegada al mundo, y a cambiar el mío,<br>
+      <strong> este pequeño universo que he creado se mantendrá flotando en el mar profundo de datos.</strong></p>
+
+      <p>Como prueba fehaciente de que aquí, <strong>siempre me encontrarás.</strong></p>
+
+      <p>Inicia tu recorrido fácilmente. La llave es<br>
+      la palabra con la que <strong>solo tú me llamas</strong>,<br>
+      miel para mis oídos y para mis retinas al leerla,<br>
+      que me es sagrada:</p>
+
+      <div class="password-input">
+        <input type="text" id="password" placeholder="Ingresa contraseña..." aria-label="Campo de contraseña"/>
+        <div class="error-message" id="error">Contraseña incorrecta. No olvides mi nombre, Santicito.</div>
+      </div>
+    </div>
+
+    <div class="image-section"></div>
+  </div>
+
+  <script>
+    const passwordField = document.getElementById('password');
+    const errorMsg = document.getElementById('error');
+
+    passwordField.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const correctPassword = 'arisusita';
+        if (passwordField.value.toLowerCase() === correctPassword) {
+          errorMsg.style.display = 'none';
+          document.body.classList.add('fade-out');
+          setTimeout(() => {
+            window.location.href = '2-Melodia.html';
+          }, 2000); // Espera 2 segundos antes de redirigir
+        } else {
+          errorMsg.style.display = 'block';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

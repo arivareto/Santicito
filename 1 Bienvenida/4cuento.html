@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cuento para ti</title>
+  <link rel="icon" type="image/png" href="4book.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    .olas-fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('olas.gif');
+  background-repeat: repeat;
+  background-size: 200px;
+  background-position: top left;
+  opacity: 0.25;
+  z-index: -1;
+  pointer-events: none;
+  filter: brightness(1.05) blur(0.5px);
+}
+
+@keyframes moverOlas {
+  animation: moverOlas 60s linear infinite;
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 1000px 0;
+  }
+}
+    
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background: linear-gradient(to bottom right, #4262F5, #122c54);
+      color: #F5CA49;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .intro {
+      max-width: 800px;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 600px;
+      height: 800px;
+      overflow: hidden;
+      border: 2px solid #3777bc;
+      border-radius: 6px;
+      background-color: #fdfdfd;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide.active {
+      display: block;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .nav-buttons {
+      margin-top: 1rem;
+    }
+
+    button {
+      background-color: #4d9de0;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #1d4e9c;
+      transform: scale(1.05);
+      transition: all 0.2s ease;
+    }
+
+    .riddle {
+      margin-top: 2rem;
+      text-align: center;
+      color: #42F563;
+    }
+
+    .riddle input {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 2px solid #4262F5;
+      margin-top: 10px;
+      cursor: text;
+    }
+  </style>
+</head>
+<body>
+    <div class="olas-fondo"></div>
+
+  <div class="intro">
+    <p><em>Te encuentro en las palabras y en los párrafos de mi mente.<br>
+Nunca dejo de aprender de ti.</em></p>
+
+<p><em>Tú, Santiago, el pescador de vivencias y aprendizajes,<br>
+no te cansas de lanzar el anzuelo intelectual ni de remar hacia lo desconocido.</em></p>
+
+<p><em>Tú, sujeto de mi admiración, recibe esta lectura.<br>
+Para que te reencuentres con ella<br>
+como quien vuelve al mar que siempre ha sido suyo.</em></p>
+  </div>
+
+  <div class="slider-container" id="slider">
+    <!-- Las imágenes se insertarán con JavaScript -->
+  </div>
+
+  <div class="nav-buttons">
+    <button onclick="prevPage()">⟵ Anterior</button>
+    <button onclick="nextPage()">Siguiente ⟶</button>
+  </div>
+
+  <div class="riddle">
+    <p><em>Y ya que estamos en términos literarios:<br><br>
+
+Pudimos darnos cita un día de abril,  
+a pesar de no compartir la presencia física,  
+en el espacio tan bonito que habías construido  
+y que pude llenar de mis ideas.<br><br>
+
+Una reunión que resultó ser más de lo que yo creía…<br>
+este evento que juntos llamamos...</em></p>
+    <input type="text" id="answer" placeholder="Registra el nombre del evento..." />
+    <button onclick="checkAnswer()">Ingresar</button>
+  </div>
+
+  <script>
+    const totalPages = 51;
+    let currentPage = 1;
+
+    const slider = document.getElementById('slider');
+
+    // Insertar imágenes con nombres personalizados
+    for (let i = 1; i <= totalPages; i++) {
+      const img = document.createElement('img');
+      img.alt = `Página ${i} del cuento ilustrado`;
+      img.src = `libropaginas/oldmansea-imágenes-${i}.jpg`;
+      img.className = 'slide';
+      if (i === 1) img.classList.add('active');
+      slider.appendChild(img);
+    }
+
+    const slides = document.querySelectorAll('.slide');
+
+    function showPage(page) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === page - 1) {
+          slide.classList.add('active');
+        }
+      });
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+      }
+    }
+
+    function checkAnswer() {
+      const input = document.getElementById('answer').value.trim().toLowerCase();
+      if (input === "espresswap") {
+        alert("¡Correcto! Avanza al siguiente nivel.");
+        window.location.href = "5regalo.html";
+      } else {
+        alert("No es correcto. Intenta de nuevo, Santicito.");
+      }
+    }
+  </script>
+
+</body>
+</html>
