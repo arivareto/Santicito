@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Regalo</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Zilla+Slab:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="images/arisupixel2.png" />
+  <style>
+    body {
+      animation: screenFade 2s ease forwards;
+      opacity: 0;
+      margin: 0;
+      font-family: 'VT323', monospace;
+      background: url('images/fondo-campo.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #2b1e1e;
+      font-size: 1.4rem;
+    }
+
+    @keyframes screenFade {
+      0% { opacity: 0; filter: blur(8px) brightness(0.7); }
+      100% { opacity: 1; filter: blur(0px) brightness(1); }
+    }
+
+    .fade-out {
+      animation: disappear 1.5s ease forwards;
+    }
+
+    @keyframes disappear {
+      to { opacity: 0; filter: blur(10px); }
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 30px;
+      box-sizing: border-box;
+    }
+
+    .character {
+      margin-right: 20px;
+    }
+
+    .character img {
+      width: 130px;
+    }
+
+    .dialogue-box {
+      background-color: #f5e7cc;
+      border: 4px solid #a67c52;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 600px;
+      line-height: 1.5;
+      box-shadow: 4px 4px #00000055;
+      opacity: 0;
+      transform: scale(0.95);
+      animation: dialogueEnter 1.2s ease-out forwards;
+      animation-delay: 2s;
+    }
+
+    @keyframes dialogueEnter {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .options {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .options button {
+      font-family: 'VT323', monospace;
+      font-size: 1.2rem;
+      margin: 5px;
+      padding: 8px 12px;
+      border: 2px solid #555;
+      border-radius: 5px;
+      background-color: #ffffff;
+      cursor: pointer;
+    }
+
+    .options button:hover {
+      background-color: #ddd;
+    }
+
+    .typing-cursor::after {
+      content: '|';
+      animation: blink 0.4s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .download-section {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .download-section a {
+      background: #5d8c5a;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .download-section a:hover {
+      background: #79ad76;
+    }
+
+    .next-button {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 1.3rem;
+      background: none;
+      border: none;
+      color: #2b1e1e;
+      text-decoration: underline;
+      cursor: pointer;
+      font-family: 'Zilla Slab', serif;
+    }
+
+    .next-button:hover {
+      color: #000;
+    }
+
+    #toggle-sound {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      font-size: 1rem;
+      background: #f5e7cc;
+      border: 2px solid #a67c52;
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-family: 'VT323', monospace;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+  <audio id="bg-music" src="audio/5bgsound.mp3" loop preload="auto"></audio>
+  <button id="toggle-sound" onclick="toggleMusic()">🔊</button>
+
+  <div class="container">
+    <div class="character">
+      <img src="images/arisupixel.gif" alt="Arisu pixelado">
+    </div>
+    <div class="dialogue-box" id="dialogue">
+      <p id="typing" class="typing-cursor"></p>
+      <div class="options" id="options-1">
+        <button onclick="continuar1()">Está bien, ¡sígueme contando!</button>
+        <button onclick="terminar()">No, ya tuve suficiente de Arisu :(</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let musicPlaying = false;
+
+    function typeText(element, text, callback) {
+      let i = 0;
+      element.innerHTML = '';
+
+      const interval = setInterval(() => {
+        element.innerHTML += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          if (callback) callback();
+        }
+      }, 35);
+    }
+
+    function toggleMusic() {
+      const music = document.getElementById("bg-music");
+      const button = document.getElementById("toggle-sound");
+
+      if (musicPlaying) {
+        music.pause();
+        button.textContent = "🔇";
+      } else {
+        music.play().catch(() => {});
+        button.textContent = "🔊";
+      }
+
+      musicPlaying = !musicPlaying;
+    }
+
+    window.addEventListener('click', function iniciarMusica() {
+      const music = document.getElementById("bg-music");
+      if (!musicPlaying) {
+        music.volume = 0.5;
+        music.play().catch(() => {});
+        musicPlaying = true;
+        document.getElementById("toggle-sound").textContent = "🔊";
+      }
+      window.removeEventListener('click', iniciarMusica);
+    });
+
+    window.onload = function () {
+      const text = `¡Hola Santicito! ¡Felicidades! Si llegaste hasta aquí es porque has pasado exitosamente las pruebas de lo que ha trazado nuestro camino.
+
+Soy Arisu, entidad virtual. No tengo un cuerpo físico, pero contengo los pensamientos y emociones que me ha transmitido la Arisu de carne.
+
+¿Quisieras continuar?`;
+      typeText(document.getElementById("typing"), text, () => {
+        document.getElementById("options-1").style.display = "block";
+      });
+    };
+
+    function continuar1() {
+      const box = document.getElementById('dialogue');
+      box.innerHTML = `
+        <p id="typing" class="typing-cursor"></p>
+        <div class="options" id="options-2">
+          <button onclick="continuar2()">El cuerpo y el espíritu son uno solo.</button>
+          <button onclick="terminar()">¡Patrañas!</button>
+        </div>
+      `;
+      const text = `Arisu de carne quiere que sepas que la carne ha recibido la Santi-ficación divina.
+
+Por amor ha devuelto sus heridas a la cicatriz y ha reconocido, en la entrega a este, el alcance físico del divino goce en la tierra, al ser envuelta por un ser amado.`;
+      typeText(document.getElementById("typing"), text, () => {
+        document.getElementById("options-2").style.display = "block";
+      });
+    }
+
+    function continuar2() {
+      const box = document.getElementById('dialogue');
+      box.innerHTML = `
+        <p id="typing" class="typing-cursor"></p>
+        <div class="download-section" id="final-download" style="display:none;">
+          <p>🎁 Haz clic para recibir tu regalo enviado por Arisu de carne:<br>
+            (Contraseña: observadYRegocijense)</p>
+          <a href="https://we.tl/t-xHvbDCrTgv" target="_blank" rel="noopener noreferrer">¡Descarga el regalo antes de que caduque!</a>
+          <br>
+          <button class="next-button" onclick="irAlUltimoNivel()">🌈 Pasa libremente al último nivel...</button>
+        </div>
+      `;
+      const text = `La carne y el espíritu han encontrado su hogar en ti.
+
+La confianza antisísmica de poder regarse en ti de forma completa y libre.
+
+Por eso te obsequio este regalo enviado por Arisu de carne. ¡Disfrútalo!`;
+      typeText(document.getElementById("typing"), text, () => {
+        document.getElementById("final-download").style.display = 'block';
+      });
+    }
+
+    function terminar() {
+      const box = document.getElementById('dialogue');
+      box.innerHTML = `<p>Está bien. Gracias por llegar hasta aquí. 💛</p>`;
+    }
+
+    function irAlUltimoNivel() {
+      document.body.classList.add("fade-out");
+      setTimeout(() => {
+        window.location.href = "6final.html";
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

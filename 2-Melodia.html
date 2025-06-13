@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="icon" type="image/png" href="images/3spotify.png">
+  <meta charset="UTF-8">
+  <title>Melodies</title>
+  <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      perspective: 1000px;
+      margin: 0;
+      padding: 0;
+      font-family: 'Zilla Slab', serif;
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 60px 20px;
+      position: relative;
+      z-index: 1;
+      cursor: default;
+    }
+
+    .stars-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 110%;
+      height: 110%;
+      background: url('images/stardust.png') repeat;
+      background-size: cover;
+      pointer-events: none;
+      opacity: 0.6;
+      animation: twinkle 8s ease-in-out infinite alternate;
+      z-index: 0;
+      transform: translateZ(0);
+      transition: transform 0.2s ease-out;
+      will-change: transform;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+      100% { opacity: 0.3; }
+    }
+
+    .texto {
+      max-width: 1000px;
+      font-size: 1.1em;
+      line-height: 1.6;
+      text-align: center;
+      margin-bottom: 40px;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 15px;
+      z-index: 2;
+      position: relative;
+    }
+
+    iframe {
+      border-radius: 12px;
+      margin-bottom: 40px;
+      width: 100%;
+      max-width: 700px;
+      height: 400px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .formulario {
+      text-align: center;
+      z-index: 2;
+      position: relative;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      width: 280px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      background-color: #8a6f1f;
+      color: #000;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #c6a847;
+    }
+
+    .mensaje-error {
+      color: #ff7777;
+      margin-top: 10px;
+    }
+
+    .fade-in {
+      animation: fadeInUp 1.2s ease-out both;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stars-overlay"></div>
+
+  <div class="texto fade-in">
+    <p><strong>Te reconozco en la música.</strong></p>
+    <p>Te encuentro en mis sentidos, inundados por sonidos creados por personas desconocidas,<br>
+    con quienes compartimos el deseo de sacar a la superficie lo sentido dentro.</p>
+    <p>Me enseñaste a sentir profundamente.<br>
+    A no tener miedo de lo que se conmueve incluso con una melodía apreciada.</p>
+    <p><em>“Lo único que me interesa es la música, y no cualquier música, sino aquella que es capaz de volverlo a uno completamente loco, que lo hace ver visiones, que lo hace querer gritar.”</em><br>
+    — Andrés Caicedo</p>
+    <p>Así también te siento a ti, en cada una de estas canciones:</p>
+  </div>
+
+  <iframe 
+    class="fade-in"
+    src="https://open.spotify.com/embed/playlist/2qODuvf94YF4PSdQ96tKNm?utm_source=generator" 
+    frameborder="0" 
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+    loading="lazy">
+  </iframe>
+
+  <div class="formulario fade-in">
+    <label for="clave">Para continuar, resuelve el acertijo:<br><br>
+Crepitan en el vinilo de Willie,<br>
+son las voces que acechan a Tricky<br>
+y fueron el tormento final de Fisher.<br><br>
+Estos son...<br><br>
+</label><br><br>
+    <input type="text" id="clave" placeholder="Ingresa tu respuesta, Santicito">
+    <br>
+    <button onclick="verificarClave()">Ingresar</button>
+    <div id="mensaje" class="mensaje-error"></div>
+  </div>
+
+  <script>
+    function verificarClave() {
+      const clave = document.getElementById('clave').value.trim().toLowerCase();
+      const mensaje = document.getElementById('mensaje');
+      if (clave === "fantasmas") {
+        window.location.href = "3solitude.html";
+      } else {
+        mensaje.textContent = "Clave incorrecta. Pista: Sinónimo: Espectros.";
+      }
+    }
+
+    document.getElementById("clave").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        verificarClave();
+      }
+    });
+
+    // 🌌 Parallax en el fondo de estrellas
+    document.addEventListener('mousemove', e => {
+      const x = (e.clientX - window.innerWidth / 2) * 0.05;
+      const y = (e.clientY - window.innerHeight / 2) * 0.05;
+      const stars = document.querySelector('.stars-overlay');
+      if (stars) {
+        stars.style.transform = `translate(${x}px, ${y}px)`;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="images/3video.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nivel 3 - Solitude</title>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 60px 20px;
+      font-family: 'Crimson Text', serif;
+      font-size: 1.2rem;
+      color: #e1d6d6;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #4b3621, #20160e);
+      animation: fadeIn 2s ease-in;
+      text-align: center;
+      gap: 2rem;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        filter: blur(10px);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    .clouds {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      background: url('images/nujabes.png') repeat-x;
+      background-size: auto 100%;
+      animation: moveClouds 140s linear infinite;
+      opacity: 0.75;
+      filter: brightness(1.1) contrast(1.05) blur(1px);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    @keyframes moveClouds {
+      from {
+        background-position: 0 0;
+      }
+      to {
+        background-position: 10000px 0;
+      }
+    }
+
+    .container {
+      max-width: 800px;
+      padding: 2rem;
+      background-color: transparent;
+      border-radius: 1rem;
+    }
+
+    video {
+      width: 100%;
+      margin-top: 1rem;
+      border-radius: 1rem;
+    }
+
+    .riddle {
+      margin-top: 2rem;
+    }
+
+    .riddle input[type="text"] {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      width: 250px;
+      background-color: #fff;
+      color: #4c8a93;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .riddle input[type="text"]:focus {
+      outline: none;
+      box-shadow: 0 0 6px #4c8a93;
+    }
+
+    button {
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      background-color: #c4b38a;
+      color: #2b1e1e;
+      border: none;
+      border-radius: 0.5rem;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      margin-left: 1rem;
+      font-weight: bold;
+      font-family: 'Crimson Text', serif;
+    }
+
+    .riddle button:hover {
+      background-color: #d0d0d0;
+    }
+
+    .hidden {
+      animation: fadeOut 1.5s ease forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        filter: blur(10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="clouds"></div>
+
+  <div class="container" id="container">
+    <p><em>Solitude. A word in English that can have two paths: one bright, one somber. When solitude shines, it describes a state of being alone that is peaceful and pleasant, allowing for introspection, reflection, and self-discovery.</em></p>
+  
+  <p>What this year without you taught me was to be with myself, to walk in my own shoes. And then, by knowing and being responsible with the self, I can feel even more intensely with the other — not because I lack meaning without you, but because when I’m with you, physically or not, I can share with you the most of me. Being in the truest state of myself with who I love.</p>
+
+    <video controls>
+      <source src="video/solitude.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="riddle">
+      <p><em>No importa tu ________, te sigo esperando.</em></p>
+      <form onsubmit="event.preventDefault(); checkAnswer();">
+        <input type="text" id="answer" placeholder="Escribe aquí la clave..." />
+        <button type="submit">Ingresar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById("answer");
+    input.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        checkAnswer();
+      }
+    });
+
+    function checkAnswer() {
+      const respuesta = input.value.trim().toLowerCase();
+      if (respuesta === "ausencia") {
+        document.getElementById("container").classList.add("hidden");
+        setTimeout(() => {
+          window.location.href = "4cuento.html";
+        }, 1500);
+      } else {
+        alert("Incorrecto, qué idea tan descabellada... ¡Concéntrate!.");
+      }
+    }
+  </script>
+</body>
+</html>
